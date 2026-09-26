@@ -7,6 +7,7 @@ import {
     Skeleton,
 } from '@heroui/react'
 import DataTable from '@/components/table/DataTable'
+import PageBanner from '@/components/PageBanner'
 import axios from 'axios'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -73,7 +74,7 @@ export default function Pokemon() {
                 })
             )
             setDataPokemon(dataWithIndex)
-            setPage(1)
+            if (!searchParams.get('page')) setPage(1)
             setIsLoading(false)
         } catch (err) {
             console.log(err)
@@ -186,8 +187,9 @@ export default function Pokemon() {
 
     return (
         <>
-            <div className="flex w-full flex-1 flex-col items-center bg-zinc-50 p-4 py-8 md:justify-center dark:bg-zinc-900">
-                <section className="flex w-full max-w-xl flex-col gap-4">
+            <div className="page-layout">
+                <section className="page-panel max-w-4xl">
+                    <PageBanner path="/pokemon" />
                     <Input
                         type="text"
                         placeholder={t('searchNameOrNumber')}
@@ -207,7 +209,7 @@ export default function Pokemon() {
                         columns={columns}
                         items={items}
                         isLoading={isLoading}
-                        emptyContent={'No Pokemon.'}
+                        emptyContent={t('pokemonNotFound')}
                         page={page}
                         totalPages={pages}
                         onPageChange={handlePageChange}

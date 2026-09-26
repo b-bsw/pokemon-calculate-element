@@ -1,83 +1,72 @@
 'use client'
 
+import { useState, FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { ArrowRight, Search, Sparkles, Zap } from 'lucide-react'
 import { useTranslate } from '@/i18n/i18nContext'
 import { items } from '@/utils/itemIconList'
-import Link from 'next/link'
-import { ArrowDownRight, Asterisk } from 'lucide-react'
-
-const accents = [
-    'bg-[#ff5b45]',
-    'bg-[#5b7cfa]',
-    'bg-[#b9f227]',
-    'bg-[#ff8ed4]',
-    'bg-[#ffcc33]',
-    'bg-[#67d9e8]',
-]
 
 export default function Home() {
-    const { t } = useTranslate()
+    const { t, lang } = useTranslate()
+    const router = useRouter()
+    const [query, setQuery] = useState('')
 
-    return (
-        <main className="brutal-grid min-h-[calc(100dvh-5rem)] text-[#151515] dark:text-[#f7f1df]">
-            <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-                <div className="mb-8 grid items-end gap-6 border-b-4 border-current pb-8 lg:grid-cols-[1fr_auto]">
-                    <div>
-                        <div className="mb-5 flex items-center gap-2 font-mono text-xs font-black tracking-[0.2em] uppercase sm:text-sm">
-                            <span className="inline-block h-3 w-3 animate-pulse bg-[#ff3b30] ring-2 ring-current" />
-                            Field database / Gen 01—09
-                        </div>
-                        <h1 className="max-w-5xl text-[clamp(4rem,13vw,10rem)] leading-[0.72] font-black tracking-[-0.085em] uppercase">
-                            Poké<span className="text-[#ff3b30]">dex</span>
-                        </h1>
-                    </div>
-                    <div className="brutal-shadow hidden rotate-2 border-4 border-[#151515] bg-[#ffcc33] p-5 text-[#151515] lg:block">
-                        <Asterisk size={52} strokeWidth={3} />
-                        <p className="mt-4 max-w-44 font-mono text-xs leading-tight font-black uppercase">
-                            All the stats. Zero decorative nonsense.
-                        </p>
-                    </div>
+    function searchPokemon(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        router.push(`/pokemon${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}`)
+    }
+
+    return <main className="home-page">
+        <div className="home-orbit orbit-one" aria-hidden="true" />
+        <div className="home-orbit orbit-two" aria-hidden="true" />
+        <div className="home-content">
+            <section className="home-hero" aria-labelledby="home-title">
+                <div className="hero-copy">
+                    <div className="eyebrow"><span className="status-dot" /> {lang === 'th' ? 'คู่มือสำหรับเทรนเนอร์' : 'THE TRAINER’S FIELD GUIDE'} <span className="eyebrow-line" /></div>
+                    <h1 id="home-title">{lang === 'th' ? <>รู้จักทุกตัว<br /><em>ชนะทุกทาง</em></> : <>Know every Pokémon.<br /><em>Find your edge.</em></>}</h1>
+                    <p>{lang === 'th' ? 'ค้นหาโปเกมอน เช็กธาตุ ท่าโจมตี และไอเทมที่ต้องใช้ ทั้งหมดในที่เดียว' : 'Pokémon, moves, type matchups, and held items. Everything you need, one search away.'}</p>
+                    <form className="hero-search" onSubmit={searchPokemon} role="search">
+                        <Search size={20} aria-hidden="true" />
+                        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={lang === 'th' ? 'ค้นหาชื่อหรือหมายเลขโปเกมอน' : 'Search Pokémon by name or number'} aria-label={t('searchNameOrNumber')} />
+                        <button type="submit" aria-label={lang === 'th' ? 'ค้นหาโปเกมอน' : 'Search Pokémon'}><ArrowRight size={21} /></button>
+                    </form>
+                    <div className="hero-hint"><Sparkles size={14} /> {lang === 'th' ? 'ลองค้นหา' : 'TRY SEARCHING'} <Link href="/pokemon?q=pikachu">Pikachu</Link><span>·</span><Link href="/pokemon?q=charizard">Charizard</Link><span>·</span><Link href="/pokemon?q=0025">#025</Link></div>
                 </div>
-
-                <div className="mb-4 flex items-center justify-between gap-4 font-mono text-xs font-black tracking-widest uppercase">
-                    <span>Select a dataset</span>
-                    <span>06 modules</span>
+                <div className="hero-visual" aria-hidden="true">
+                    <div className="visual-grid" />
+                    <div className="visual-ring ring-outer" />
+                    <div className="visual-ring ring-inner" />
+                    <div className="visual-ball"><div className="ball-top" /><div className="ball-center"><div /></div><div className="ball-bottom" /></div>
+                    <div className="visual-label label-top">POKÉDEX <strong>001—∞</strong></div>
+                    <div className="visual-label label-bottom"><Zap size={14} /> READY TO EXPLORE</div>
+                    <div className="visual-cross cross-one">+</div><div className="visual-cross cross-two">+</div>
                 </div>
-
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            </section>
+            <section className="explore-section" aria-labelledby="explore-title">
+                <div className="section-heading"><div><span className="section-kicker">01 / EXPLORE</span><h2 id="explore-title">{lang === 'th' ? 'เลือกสิ่งที่ต้องการหา' : 'Where do you want to go?'}</h2></div><p>{lang === 'th' ? 'ข้อมูลพร้อมใช้สำหรับทุกการเดินทาง' : 'The right data for every part of your journey.'}</p></div>
+                <div className="feature-grid">
                     {items.map((item, index) => {
                         const Icon = item.icon
-                        return (
-                            <Link
-                                href={item.path}
-                                key={item.id}
-                                className={`brutal-card group relative flex min-h-52 flex-col justify-between overflow-hidden border-4 border-[#151515] p-5 text-[#151515] ${accents[index]}`}
-                            >
-                                <div className="flex items-start justify-between">
-                                    <span className="font-mono text-sm font-black">
-                                        /0{index + 1}
-                                    </span>
-                                    <Icon size={42} strokeWidth={2.5} />
-                                </div>
-                                <div className="flex items-end justify-between gap-4">
-                                    <h2 className="max-w-[80%] text-3xl leading-none font-black tracking-[-0.05em] uppercase sm:text-4xl">
-                                        {t(item.nameTrans)}
-                                    </h2>
-                                    <ArrowDownRight
-                                        className="shrink-0 transition-transform group-hover:translate-x-1 group-hover:translate-y-1"
-                                        size={34}
-                                        strokeWidth={3}
-                                    />
-                                </div>
-                            </Link>
-                        )
+                        const descriptions: Record<string, [string, string]> = {
+                            '/pokemon': ['ค้นหาข้อมูลและค่าสถานะของโปเกมอน', 'Explore Pokémon, stats, and evolutions'],
+                            '/moves': ['ดูพลัง ความแม่นยำ และรายละเอียดท่า', 'Check power, accuracy, and move details'],
+                            '/items': ['ค้นหาไอเทมและผลการใช้งาน', 'Find held items and their effects'],
+                            '/calculate': ['คำนวณแพ้ชนะจากธาตุที่เลือก', 'Calculate strengths and weaknesses'],
+                            '/elements': ['ดูความสัมพันธ์ของทั้ง 18 ธาตุ', 'Explore all 18 type matchups'],
+                            '/nature': ['ดู Nature ที่เพิ่มและลดค่าสถานะ', 'Find nature stat boosts and reductions'],
+                        }
+                        return <Link key={item.path} href={item.path} className={`feature-card feature-${index + 1}`}>
+                            <span className="feature-index">{String(index + 1).padStart(2, '0')} / 06</span>
+                            <span className="feature-icon"><Icon size={27} strokeWidth={1.8} /></span>
+                            <span className="feature-title">{t(item.nameTrans)}</span>
+                            <span className="feature-description">{descriptions[item.path][lang === 'th' ? 0 : 1]}</span>
+                            <span className="feature-arrow"><ArrowRight size={18} /></span>
+                        </Link>
                     })}
                 </div>
-
-                <footer className="mt-10 flex flex-wrap justify-between gap-3 border-t-4 border-current pt-4 font-mono text-xs font-black uppercase">
-                    <span>© 2026 Pokémon Info</span>
-                    <span>Built for trainers // Bangkok</span>
-                </footer>
             </section>
-        </main>
-    )
+            <footer className="home-footer"><span>POKÉ ATLAS © 2026</span><span>{lang === 'th' ? 'สร้างเพื่อเหล่าเทรนเนอร์' : 'MADE FOR TRAINERS EVERYWHERE'}</span></footer>
+        </div>
+    </main>
 }

@@ -66,15 +66,14 @@ const TableNature = () => {
     const { t } = useTranslate()
 
     return (
-        <div className="w-full max-w-5xl overflow-auto">
+        <div className="w-full overflow-auto">
             <Table
                 aria-label="Pokemon nature table"
                 classNames={{
-                    wrapper:
-                        'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
-                    th: 'text-center bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold uppercase',
-                    td: 'text-center font-semibold',
-                    tr: 'border-b-2 border-transparent transition-colors',
+                    wrapper: 'atlas-table',
+                    th: 'atlas-table-heading',
+                    td: 'atlas-table-cell',
+                    tr: 'atlas-table-row',
                 }}
             >
                 <TableHeader>

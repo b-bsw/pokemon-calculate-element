@@ -20,6 +20,7 @@ import axios from 'axios'
 import Image from 'next/image'
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Package } from 'lucide-react'
+import PageBanner from '@/components/PageBanner'
 
 type HeldItem = {
     id: number
@@ -184,8 +185,9 @@ export default function Items() {
 
     return (
         <>
-            <div className="flex w-full flex-1 justify-center overflow-scroll p-4 py-4">
-                <section className="flex w-full max-w-2xl flex-col gap-4">
+            <div className="page-layout">
+                <section className="page-panel max-w-4xl">
+                    <PageBanner path="/items" />
 
                     <Input
                         type="text"

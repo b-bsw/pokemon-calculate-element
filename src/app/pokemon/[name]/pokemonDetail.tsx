@@ -715,7 +715,7 @@ export default function PokemonDetail({
 
     return (
         <>
-            <div className="w-full max-w-4xl flex-1 px-4 py-8">
+            <div className="detail-layout w-full max-w-5xl flex-1 px-4 py-8">
                 {/* Main Card */}
                 <Card className="border-2 border-zinc-900 bg-zinc-50 shadow-none dark:border-zinc-50 dark:bg-zinc-900 rounded-xl overflow-hidden">
                     <CardBody className="p-0">

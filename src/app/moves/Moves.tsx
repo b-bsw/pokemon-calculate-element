@@ -19,6 +19,7 @@ import {
     Divider,
 } from '@heroui/react'
 import DataTable from '@/components/table/DataTable'
+import PageBanner from '@/components/PageBanner'
 import axios from 'axios'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -358,8 +359,9 @@ export default function Moves() {
 
     return (
         <>
-            <div className="flex w-full flex-1 items-start justify-center bg-zinc-50 p-4 py-8 md:items-center md:py-4 dark:bg-zinc-900">
-                <section className="flex w-full max-w-4xl flex-col gap-4">
+            <div className="page-layout">
+                <section className="page-panel max-w-5xl">
+                    <PageBanner path="/moves" />
                     <Input
                         type="text"
                         placeholder={t('searchMove') || 'Search move name...'}

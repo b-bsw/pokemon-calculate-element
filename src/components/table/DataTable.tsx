@@ -46,7 +46,7 @@ export default function DataTable<T>({
 }: DataTableProps<T>) {
     const bottomContent =
         page !== undefined && totalPages !== undefined && totalPages > 0 ? (
-            <div className="mt-5 flex w-full justify-center">
+            <div className="flex w-full justify-center mt-5">
                 <Pagination
                     isCompact
                     showControls
@@ -55,13 +55,12 @@ export default function DataTable<T>({
                     total={totalPages}
                     onChange={onPageChange}
                     classNames={{
-                        base: 'gap-2',
-                        wrapper:
-                            'border-3 border-zinc-900 dark:border-[#f7f1df] shadow-[4px_4px_0_#151515] dark:shadow-[4px_4px_0_#f7f1df] rounded-none bg-[#f7f1df] dark:bg-[#151515] overflow-hidden',
-                        item: 'bg-transparent text-zinc-900 dark:text-zinc-50 font-bold hover:bg-zinc-200 dark:hover:bg-zinc-800',
-                        cursor: 'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold',
-                        prev: 'bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800',
-                        next: 'bg-transparent text-zinc-900 dark:text-zinc-50 hover:bg-zinc-200 dark:hover:bg-zinc-800',
+                        base: "gap-2",
+                        wrapper: "atlas-pagination",
+                        item: "atlas-pagination-item",
+                        cursor: "atlas-pagination-current",
+                        prev: "atlas-pagination-item",
+                        next: "atlas-pagination-item"
                     }}
                 />
             </div>
@@ -70,10 +69,9 @@ export default function DataTable<T>({
     return (
         <Table
             classNames={{
-                wrapper:
-                    'border-4 border-zinc-900 dark:border-[#f7f1df] shadow-[7px_7px_0_#151515] dark:shadow-[7px_7px_0_#f7f1df] rounded-none bg-[#f7f1df] dark:bg-[#151515]',
-                th: 'text-center bg-[#ffcc33] text-[#151515] border-b-3 border-[#151515] font-mono font-black uppercase tracking-wider',
-                td: 'text-center font-mono font-bold border-b border-zinc-900/25 dark:border-[#f7f1df]/25',
+                wrapper: 'atlas-table',
+                th: 'atlas-table-heading',
+                td: 'atlas-table-cell',
             }}
             aria-label={ariaLabel}
             bottomContent={bottomContent}
@@ -104,7 +102,7 @@ export default function DataTable<T>({
                 {(item) => (
                     <TableRow
                         key={getRowKey(item)}
-                        className={`transition-colors hover:bg-[#b9f227] hover:text-[#151515] ${
+                        className={`atlas-table-row ${
                             onRowClick ? 'cursor-pointer' : ''
                         }`}
                     >

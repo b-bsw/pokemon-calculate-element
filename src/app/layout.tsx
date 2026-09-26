@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist_Mono, Prompt } from 'next/font/google'
+import { Prompt } from 'next/font/google'
 import { Providers } from './providers'
 import MainHeader from '@/components/headers/MainHeader'
 import { I18nProvider } from '@/i18n/i18nContext'
@@ -11,21 +11,14 @@ const prompt = Prompt({
     subsets: ['latin', 'thai'],
 })
 
-const geistMono = Geist_Mono({
-    variable: '--font-geist-mono',
-    subsets: ['latin'],
-})
-
 export const metadata: Metadata = {
-    title: 'POKEMON INFORMATION',
-    description: 'ข้อมูลสิ่งต่างกับเกี่ยวกับโปเกม่อน',
+    title: 'Poké Atlas | คู่มือโปเกมอนสำหรับเทรนเนอร์',
+    description: 'ค้นหาโปเกมอน ท่าโจมตี ไอเทม ตารางธาตุ และคำนวณจุดแข็งจุดอ่อนในที่เดียว',
 }
 
 export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
     viewportFit: 'cover',
 }
 
@@ -34,14 +27,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body
-                className={`${prompt.variable} ${geistMono.variable} **:scrollbar-hide antialiased **:scroll-smooth`}
-            >
+            <body className={`${prompt.variable} antialiased`}>
                 <I18nProvider>
                     <Providers>
                         <div className="min-h-dvh w-full max-w-full">
                             <MainHeader />
-                            <div className="flex min-h-dvh flex-col pt-20">
+                            <div className="app-content flex min-h-[calc(100dvh-76px)] flex-col">
                                 {children}
                             </div>
                         </div>

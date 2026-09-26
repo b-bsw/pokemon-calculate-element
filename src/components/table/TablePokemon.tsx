@@ -16,12 +16,12 @@ const TablePokemon = () => {
     const { t } = useTranslate()
 
     return (
-        <div className="w-full max-w-4xl">
+        <div className="w-full">
             <div className="space-y-3 md:hidden">
                 {typeChart.map((e) => (
                     <div
                         key={e.name}
-                        className="rounded-xl border-2 border-zinc-900 bg-zinc-50 p-4 text-zinc-900 shadow-none dark:border-zinc-50 dark:bg-zinc-900 dark:text-zinc-50"
+                        className="atlas-type-card"
                     >
                         <div className="mb-3 flex items-center gap-2">
                             <div
@@ -69,11 +69,10 @@ const TablePokemon = () => {
                 <Table
                     aria-label="Pokemon element table"
                     classNames={{
-                        wrapper:
-                            'border-2 border-zinc-900 dark:border-zinc-50 shadow-none rounded-xl bg-zinc-50 dark:bg-zinc-900',
-                        th: 'bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 font-bold uppercase',
-                        td: 'font-semibold',
-                        tr: 'border-b-2 border-transparent transition-colors',
+                        wrapper: 'atlas-table',
+                        th: 'atlas-table-heading',
+                        td: 'atlas-table-cell',
+                        tr: 'atlas-table-row',
                     }}
                 >
                     <TableHeader>

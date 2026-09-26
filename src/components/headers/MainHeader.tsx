@@ -1,77 +1,57 @@
 'use client'
 
-import { useTranslate } from '@/i18n/i18nContext'
-import { items } from '@/utils/itemIconList'
-import useDarkMode from '@/hooks/useDarkMode'
-import { Moon, Sun } from 'lucide-react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Menu, Moon, Sun, X } from 'lucide-react'
+import { useTranslate } from '@/i18n/i18nContext'
+import useDarkMode from '@/hooks/useDarkMode'
+import { items } from '@/utils/itemIconList'
 
-const MainHeader = () => {
-    const path = usePathname()
-    const { theme, setTheme } = useDarkMode()
+export default function MainHeader() {
+    const pathname = usePathname()
+    const [menuOpen, setMenuOpen] = useState(false)
     const { t, lang, setLang } = useTranslate()
-    const isDarkMode = theme === 'dark'
+    const { theme, setTheme } = useDarkMode()
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 border-b-4 border-[#151515] bg-[#f7f1df] text-[#151515] dark:border-[#f7f1df] dark:bg-[#151515] dark:text-[#f7f1df]">
-            <div className="flex h-20 items-stretch">
-                <Link
-                    href="/"
-                    aria-label="Pokémon Info home"
-                    className="flex shrink-0 items-center border-r-4 border-current bg-[#ff3b30] px-4 text-xl font-black tracking-[-0.06em] text-[#151515] uppercase sm:px-6 sm:text-2xl"
-                >
-                    PKMN<span className="hidden sm:inline">.INFO</span>
+        <header className="site-header">
+            <div className="site-header-inner">
+                <Link href="/" className="brand" onClick={() => setMenuOpen(false)} aria-label="Pokémon Atlas home">
+                    <span className="brand-mark" aria-hidden="true"><span /></span>
+                    <span className="brand-copy"><strong>POKÉ ATLAS</strong><small>FIELD GUIDE / 001</small></span>
                 </Link>
-
-                <nav
-                    className="scll flex min-w-0 flex-1 overflow-x-auto"
-                    aria-label="Main navigation"
-                >
-                    {items.map((item, index) => {
-                        const active =
-                            path === item.path ||
-                            path.startsWith(`${item.path}/`)
-                        return (
-                            <Link
-                                key={item.id}
-                                href={item.path}
-                                className={`flex shrink-0 items-center gap-2 border-r-2 border-current px-4 font-mono text-xs font-black uppercase transition-colors sm:text-sm ${active ? 'bg-[#ffcc33] text-[#151515]' : 'hover:bg-[#b9f227] hover:text-[#151515]'}`}
-                            >
-                                <span className="opacity-60">0{index + 1}</span>
-                                {t(item.nameTrans)}
-                            </Link>
-                        )
+                <nav className="desktop-nav" aria-label={lang === 'th' ? 'เมนูหลัก' : 'Main navigation'}>
+                    {items.map((item) => {
+                        const Icon = item.icon
+                        const active = pathname === item.path || pathname.startsWith(`${item.path}/`)
+                        return <Link key={item.path} href={item.path} className={`nav-link ${active ? 'is-active' : ''}`} aria-current={active ? 'page' : undefined}>
+                            <Icon size={16} strokeWidth={2} /><span>{t(item.nameTrans)}</span>
+                        </Link>
                     })}
                 </nav>
-
-                <div className="flex shrink-0 items-stretch border-l-2 border-current">
-                    <button
-                        type="button"
-                        aria-label={
-                            isDarkMode ? 'Use light mode' : 'Use dark mode'
-                        }
-                        onClick={() => setTheme(isDarkMode ? 'light' : 'dark')}
-                        className="grid w-12 place-items-center border-r-2 border-current transition-colors hover:bg-[#5b7cfa] hover:text-[#151515] sm:w-16"
-                    >
-                        {isDarkMode ? (
-                            <Sun size={22} strokeWidth={3} />
-                        ) : (
-                            <Moon size={22} strokeWidth={3} />
-                        )}
+                <div className="header-actions">
+                    <div className="language-switch" role="group" aria-label={t('language.switch')}>
+                        <button type="button" className={lang === 'th' ? 'selected' : ''} onClick={() => setLang('th')} aria-pressed={lang === 'th'}>TH</button>
+                        <button type="button" className={lang === 'en' ? 'selected' : ''} onClick={() => setLang('en')} aria-pressed={lang === 'en'}>EN</button>
+                    </div>
+                    <button type="button" className="icon-action" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                     </button>
-                    <button
-                        type="button"
-                        onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
-                        className="w-12 font-mono text-xs font-black uppercase transition-colors hover:bg-[#ff8ed4] hover:text-[#151515] sm:w-16 sm:text-sm"
-                        aria-label="Change language"
-                    >
-                        {lang}
+                    <button type="button" className="icon-action menu-toggle" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}>
+                        {menuOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
                 </div>
             </div>
+            {menuOpen && <nav className="mobile-nav" aria-label={lang === 'th' ? 'เมนูหลัก' : 'Main navigation'}>
+                {items.map((item) => {
+                    const Icon = item.icon
+                    const active = pathname === item.path || pathname.startsWith(`${item.path}/`)
+                    return <Link key={item.path} href={item.path} onClick={() => setMenuOpen(false)} className={`mobile-nav-link ${active ? 'is-active' : ''}`} aria-current={active ? 'page' : undefined}>
+                        <Icon size={19} /><span>{t(item.nameTrans)}</span><span aria-hidden="true">↗</span>
+                    </Link>
+                })}
+            </nav>}
         </header>
     )
 }
-
-export default MainHeader

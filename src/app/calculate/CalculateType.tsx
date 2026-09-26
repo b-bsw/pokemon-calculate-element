@@ -18,6 +18,7 @@ import iconElements, { icon2TagSvg } from '@/components/icons'
 import { RefreshCcw } from 'lucide-react'
 import Image from 'next/image'
 import { useTranslate } from '@/i18n/i18nContext'
+import PageBanner from '@/components/PageBanner'
 
 const CalculateType = () => {
     const [type1, setType1] = useState<string>('')
@@ -180,7 +181,8 @@ const CalculateType = () => {
     }
 
     return (
-        <div className="flex w-full flex-1 flex-col items-start justify-center gap-6 p-4 py-8 md:items-center md:py-4">
+        <div className="page-layout flex-col gap-6">
+            <div className="w-full max-w-5xl"><PageBanner path="/calculate" /></div>
             {/* Input Section */}
             <div className="w-full max-w-3xl">
                 <div className="flex w-full flex-col items-end gap-4 rounded-xl border-2 border-zinc-900 bg-zinc-50 p-6 shadow-none md:flex-row dark:border-zinc-50 dark:bg-zinc-900">
@@ -214,7 +216,7 @@ const CalculateType = () => {
                     </Autocomplete>
 
                     <Autocomplete
-                        label={t('SelectPokeElemental') + ' 2 (Optional)'}
+                        label={`${t('SelectPokeElemental')} 2 (${t('optional')})`}
                         placeholder="Type 2"
                         size="md"
                         fullWidth
